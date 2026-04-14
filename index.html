@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>classroomlearnschoolcaymade</title>
+  <style>
+    body{margin:0;font-family:system-ui,Arial;background:#05050c;color:#eef2ff}
+    .top{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(5,5,12,.9)}
+    .brand{font-weight:900}
+    .shell{max-width:1050px;margin:0 auto;padding:16px}
+    .search{width:100%;padding:10px 12px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#eef2ff;outline:none}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px}
+    .card{border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));padding:12px}
+    .card:hover{border-color:rgba(180,92,255,.5)}
+    .name{font-weight:850}
+    .cat{font-size:12px;opacity:.8;margin-top:2px}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">classroomlearnschoolcaymade</div>
+    <div style="opacity:.8;font-size:13px">Search and click a game to play</div>
+  </div>
+  <div class="shell">
+    <input id="search" class="search" placeholder="Search games…" />
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <script>
+    const games = [
+      {name:"Subway Surfers", cat:"arcade", url:"https://poki.com/en/g/subway-surfers"},
+      {name:"Stickman Hook", cat:"arcade", url:"https://poki.com/en/g/stickman-hook"},
+      {name:"Drive Mad", cat:"action", url:"https://poki.com/en/g/drive-mad"},
+      {name:"Basketball Stars", cat:"sports", url:"https://poki.com/en/g/basketball-stars"},
+      {name:"Cut the Rope", cat:"puzzle", url:"https://poki.com/en/g/cut-the-rope"}
+    ];
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    function render(q=""){
+      const s = q.trim().toLowerCase();
+      grid.innerHTML = "";
+      games.filter(g => !s || g.name.toLowerCase().includes(s) || g.cat.includes(s))
+        .forEach(g => {
+          const a = document.createElement("a");
+          a.className="card";
+          a.href=g.url;
+          a.target="_blank";
+          a.rel="noopener noreferrer";
+          a.innerHTML = `<div class="name">${g.name}</div><div class="cat">${g.cat}</div>`;
+          grid.appendChild(a);
+        });
+      if (!grid.childElementCount) {
+        const d=document.createElement("div");
+        d.className="card";
+        d.textContent="No games found.";
+        grid.appendChild(d);
+      }
+    }
+    search.addEventListener("input", e => render(e.target.value));
+    render();
+  </script>
+</body>
+</html>
