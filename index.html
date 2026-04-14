@@ -5,59 +5,225 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>classroomlearnschoolcaymade</title>
   <style>
-    body{margin:0;font-family:system-ui,Arial;background:#05050c;color:#eef2ff}
-    .top{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(5,5,12,.9)}
-    .brand{font-weight:900}
-    .shell{max-width:1050px;margin:0 auto;padding:16px}
-    .search{width:100%;padding:10px 12px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#eef2ff;outline:none}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px}
-    .card{border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));padding:12px}
-    .card:hover{border-color:rgba(180,92,255,.5)}
-    .name{font-weight:850}
-    .cat{font-size:12px;opacity:.8;margin-top:2px}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:linear-gradient(180deg,#0a0d18,#11162a 35%,#0b0f1d);
+      color:#eef3ff;
+    }
+    .top{
+      position:sticky;
+      top:0;
+      z-index:10;
+      padding:14px 18px;
+      background:rgba(8,11,20,.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .brand{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin-top:4px;
+      font-size:13px;
+      color:#b9c3dd;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px;
+    }
+    .search{
+      width:100%;
+      padding:14px 16px;
+      border:none;
+      outline:none;
+      border-radius:18px;
+      background:rgba(255,255,255,.08);
+      color:white;
+      font-size:15px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+    }
+    .search::placeholder{color:#b8bfd3}
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      margin-bottom:16px;
+    }
+    .chip{
+      border:none;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:700;
+      color:#eef3ff;
+      background:rgba(255,255,255,.08);
+      cursor:pointer;
+    }
+    .chip.active{
+      background:linear-gradient(180deg,#8b5cf6,#6d4aff);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:16px;
+    }
+    .card{
+      display:block;
+      text-decoration:none;
+      color:white;
+      min-height:170px;
+      border-radius:22px;
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      transition:transform .16s ease, box-shadow .16s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.22);
+    }
+    .card:hover{
+      transform:translateY(-4px) scale(1.01);
+      box-shadow:0 16px 34px rgba(0,0,0,.32);
+    }
+    .emoji{
+      font-size:42px;
+      line-height:1;
+    }
+    .name{
+      margin-top:38px;
+      font-size:20px;
+      font-weight:900;
+      text-shadow:0 2px 8px rgba(0,0,0,.25);
+    }
+    .tag{
+      margin-top:6px;
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(255,255,255,.18);
+      backdrop-filter:blur(8px);
+    }
+    .shine{
+      position:absolute;
+      right:-20px;
+      top:-20px;
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background:rgba(255,255,255,.14);
+      filter:blur(8px);
+    }
+    .empty{
+      padding:18px;
+      border-radius:18px;
+      background:rgba(255,255,255,.08);
+      font-weight:700;
+    }
+    .foot{
+      text-align:center;
+      color:#aeb9d6;
+      font-size:13px;
+      padding:22px 18px 28px;
+    }
   </style>
 </head>
 <body>
   <div class="top">
     <div class="brand">classroomlearnschoolcaymade</div>
-    <div style="opacity:.8;font-size:13px">Search and click a game to play</div>
+    <div class="sub">search a game and tap a tile to play</div>
   </div>
-  <div class="shell">
-    <input id="search" class="search" placeholder="Search games…" />
+
+  <div class="wrap">
+    <input id="search" class="search" placeholder="Search games..." />
+
+    <div class="chips">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="arcade">Arcade</button>
+      <button class="chip" data-cat="sports">Sports</button>
+      <button class="chip" data-cat="action">Action</button>
+      <button class="chip" data-cat="puzzle">Puzzle</button>
+    </div>
+
     <div id="grid" class="grid"></div>
+  </div>
+
+  <div class="foot">
+    public game launcher • built by cay
   </div>
 
   <script>
     const games = [
-      {name:"Subway Surfers", cat:"arcade", url:"https://poki.com/en/g/subway-surfers"},
-      {name:"Stickman Hook", cat:"arcade", url:"https://poki.com/en/g/stickman-hook"},
-      {name:"Drive Mad", cat:"action", url:"https://poki.com/en/g/drive-mad"},
-      {name:"Basketball Stars", cat:"sports", url:"https://poki.com/en/g/basketball-stars"},
-      {name:"Cut the Rope", cat:"puzzle", url:"https://poki.com/en/g/cut-the-rope"}
+      {name:"Subway Surfers", cat:"arcade", emoji:"🚇", color:"linear-gradient(135deg,#ff7a18,#ffb347)", url:"https://poki.com/en/g/subway-surfers"},
+      {name:"Stickman Hook", cat:"arcade", emoji:"🪝", color:"linear-gradient(135deg,#22c1c3,#4facfe)", url:"https://poki.com/en/g/stickman-hook"},
+      {name:"Drive Mad", cat:"action", emoji:"🚗", color:"linear-gradient(135deg,#f43f5e,#fb7185)", url:"https://poki.com/en/g/drive-mad"},
+      {name:"Basketball Stars", cat:"sports", emoji:"🏀", color:"linear-gradient(135deg,#f59e0b,#f97316)", url:"https://poki.com/en/g/basketball-stars"},
+      {name:"Moto X3M", cat:"action", emoji:"🏍️", color:"linear-gradient(135deg,#06b6d4,#2563eb)", url:"https://poki.com/en/g/moto-x3m"},
+      {name:"Slope", cat:"arcade", emoji:"🟢", color:"linear-gradient(135deg,#22c55e,#15803d)", url:"https://poki.com/en/g/slope"},
+      {name:"Cut the Rope", cat:"puzzle", emoji:"✂️", color:"linear-gradient(135deg,#10b981,#14b8a6)", url:"https://poki.com/en/g/cut-the-rope"},
+      {name:"2048", cat:"puzzle", emoji:"🔢", color:"linear-gradient(135deg,#8b5cf6,#6366f1)", url:"https://play2048.co/"},
+      {name:"Cookie Clicker", cat:"arcade", emoji:"🍪", color:"linear-gradient(135deg,#d97706,#92400e)", url:"https://orteil.dashnet.org/cookieclicker/"},
+      {name:"Chess", cat:"puzzle", emoji:"♟️", color:"linear-gradient(135deg,#374151,#111827)", url:"https://lichess.org/"},
+      {name:"Crossy Road", cat:"arcade", emoji:"🐥", color:"linear-gradient(135deg,#84cc16,#22c55e)", url:"https://poki.com/en/g/crossy-road"},
+      {name:"Fireboy Watergirl", cat:"puzzle", emoji:"🔥💧", color:"linear-gradient(135deg,#ef4444,#3b82f6)", url:"https://poki.com/en/g/fireboy-and-watergirl-forest-temple"},
+      {name:"Krunker", cat:"action", emoji:"🔫", color:"linear-gradient(135deg,#64748b,#334155)", url:"https://krunker.io/"},
+      {name:"Tetris", cat:"puzzle", emoji:"🧩", color:"linear-gradient(135deg,#7c3aed,#ec4899)", url:"https://tetris.com/play-tetris"},
+      {name:"Soccer Skills", cat:"sports", emoji:"⚽", color:"linear-gradient(135deg,#16a34a,#22c55e)", url:"https://www.crazygames.com/game/soccer-skills-world-cup"},
+      {name:"Agar.io", cat:"arcade", emoji:"⚫", color:"linear-gradient(135deg,#0f172a,#475569)", url:"https://agar.io/"}
     ];
+
     const grid = document.getElementById("grid");
     const search = document.getElementById("search");
-    function render(q=""){
-      const s = q.trim().toLowerCase();
+    const chips = document.querySelectorAll(".chip");
+    let activeCat = "all";
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const filtered = games.filter(g => {
+        const catOk = activeCat === "all" || g.cat === activeCat;
+        const searchOk = !q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q);
+        return catOk && searchOk;
+      });
+
       grid.innerHTML = "";
-      games.filter(g => !s || g.name.toLowerCase().includes(s) || g.cat.includes(s))
-        .forEach(g => {
-          const a = document.createElement("a");
-          a.className="card";
-          a.href=g.url;
-          a.target="_blank";
-          a.rel="noopener noreferrer";
-          a.innerHTML = `<div class="name">${g.name}</div><div class="cat">${g.cat}</div>`;
-          grid.appendChild(a);
-        });
-      if (!grid.childElementCount) {
-        const d=document.createElement("div");
-        d.className="card";
-        d.textContent="No games found.";
-        grid.appendChild(d);
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty">No games found.</div>';
+        return;
       }
+
+      filtered.forEach(g => {
+        const a = document.createElement("a");
+        a.className = "card";
+        a.href = g.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.style.background = g.color;
+        a.innerHTML = `
+          <div class="shine"></div>
+          <div class="emoji">${g.emoji}</div>
+          <div class="name">${g.name}</div>
+          <div class="tag">${g.cat}</div>
+        `;
+        grid.appendChild(a);
+      });
     }
-    search.addEventListener("input", e => render(e.target.value));
+
+    search.addEventListener("input", render);
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        activeCat = chip.dataset.cat;
+        render();
+      });
+    });
+
     render();
   </script>
 </body>
